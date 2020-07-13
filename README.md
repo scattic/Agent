@@ -11,26 +11,26 @@ that a Scheduled Task exists to start the Agent as a normal application every X 
 Syntax
 ------
 
->agent.exe [-i] [-s] [-u] [-q] [-p]
+**agent.exe [-i] [-s] [-u] [-q] [-p]**
 
->-i : installs the application. Requires elevated access rights.
+-i : installs the application. Requires elevated access rights.
 
->-s : runs as a service. Don't use this argument when starting normally (from User Space). 
+-s : runs as a service. Don't use this argument when starting normally (from User Space). 
 
->-u : runs service code, but from the User Space. Use this for debugging purposes.
+-u : runs service code, but from the User Space. Use this for debugging purposes.
 
->-p : spawns itself then quit, used when started by Task Scheduler
+-p : spawns itself then quit, used when started by Task Scheduler
 
 Source notes
 ------------
 
 * Change Resources\AgentName will define: 
-  * name of service (<AgentName>Svc)
+  * name of service (\<AgentName\>Svc)
   * EventLog source
-  * name of ScheduledTask ("Launch <AgentName>-<SID>")
-  * name of executable file installed under \Program Files
+  * name of ScheduledTask ("Launch \<AgentName\>\-\<SID\>")
+  * name of executable file installed under \\Program Files
 
 * Other configurable strings in Resources:
-  * InstallFolder for the folder name under \Program Files
+  * InstallFolder for the folder name under \\Program Files
   * ServiceDisplay: display name for service
   * ServiceDescription: description for service
