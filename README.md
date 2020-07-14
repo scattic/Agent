@@ -11,9 +11,9 @@ that a Scheduled Task exists to start the Agent as a normal application every X 
 Syntax
 ------
 
-**agent.exe [-i] [-s] [-u] [-q] [-p]**
+**agent.exe [-i] [-s] [-u] [-p]**
 
--i : installs the application. Requires elevated access rights.
+-i : installs the application (copies the exe to Program Files, registers & starts the service). Requires elevated access rights.
 
 -s : runs as a service. Don't use this argument when starting normally (from User Space). 
 
