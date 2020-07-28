@@ -43,3 +43,5 @@ To customize the code, one could start to:
   * InstallFolder for the folder name under \\Program Files
   * ServiceDisplay: display name for service
   * ServiceDescription: description for service
+ 
+Meta: CEH9
